@@ -14,7 +14,19 @@ def fstab_generator(argv):
     if mount_details['type'] == 'nfs':
       mount['source'] += ':' + mount_details['export']
 
-    output_lines += mount['source'] + '\n'
+    # Mount point
+    mount['point'] = mount_details['mount']
+
+    # Mount filesystem
+    mount['fs_type'] = mount_details['type']
+
+    # Mount options
+    mount['options'] = 'defaults'
+    if 'options' in mount_details:
+      for option in mount_details['options']:
+        mount['options'] += ',' + option
+
+    output_lines += mount['source'] + '\t' + mount['point'] + '\t' + mount['fs_type'] + '\t' + mount['options'] + '\n'
 
   return(output_lines)
 
