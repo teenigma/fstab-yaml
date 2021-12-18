@@ -56,7 +56,11 @@ def main(argv):
 
   if 'fstab' in fstab_load:
     result = fstab_generator(fstab_load['fstab'])
-    print(result)
+    with open(output_file, "w") as file:
+      try:
+        file.write(result)
+      except IOError as exc:
+        print(exc)
   else:
     print('fstab key is expected.')
 
