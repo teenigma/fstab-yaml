@@ -4,6 +4,7 @@ import sys, yaml
 
 def fstab_generator(argv):
   output_lines = ''
+  fs_dump_list = ['xfs', 'ext2', 'ext3', 'ext4']
 
   for mount_source in argv:
     mount_details = argv[mount_source]
@@ -26,7 +27,19 @@ def fstab_generator(argv):
       for option in mount_details['options']:
         mount['options'] += ',' + option
 
-    output_lines += mount['source'] + '\t' + mount['point'] + '\t' + mount['fs_type'] + '\t' + mount['options'] + '\n'
+    # Mount dump
+    if mount_details['type'] in fs_dump_list:
+      mount['dump'] = '1'
+    else:
+      mount['dump'] = '0'
+
+    # Mount pass
+    if mount_details['mount'] == '/':
+      mount['pass'] = '1'
+    else:
+      mount['pass'] = '2'
+
+    output_lines += mount['source'] + '\t' + mount['point'] + '\t' + mount['fs_type'] + '\t' + mount['options'] + '\t' + mount['dump'] + ' ' + mount['pass'] + '\n'
 
   return(output_lines)
 
