@@ -48,6 +48,9 @@ def main(argv):
   input_file = 'fstab.yaml'
   output_file = 'results/fstab.out'
 
+  if len(argv) > 0 and argv[0] != '':
+    input_file = argv[0]
+
   with open(input_file, "r") as stream:
     try:
       fstab_load = yaml.safe_load(stream)
